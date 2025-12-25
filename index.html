@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小甜专属</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "Heiti SC", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffe6f2 0%, #ffc8dd 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 漂浮爱心背景 */
+        .float-heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff8fa3;
+            transform: rotate(45deg);
+            opacity: 0.7;
+            animation: float 8s linear infinite;
+            z-index: 1;
+        }
+
+        .float-heart::before,
+        .float-heart::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff8fa3;
+            border-radius: 50%;
+        }
+
+        .float-heart::before {
+            top: -10px;
+            left: 0;
+        }
+
+        .float-heart::after {
+            top: 0;
+            left: -10px;
+        }
+
+        @keyframes float {
+            0% {
+                transform: rotate(45deg) translateY(100vh) scale(0.5);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.7;
+            }
+            80% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: rotate(45deg) translateY(-50px) scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        /* 表白卡片容器 */
+        .confess-card {
+            width: 90%;
+            max-width: 500px;
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(255, 127, 178, 0.3);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        /* 卡片装饰 */
+        .confess-card::before {
+            content: "♥";
+            color: #ffb3c1;
+            font-size: 24px;
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            opacity: 0.8;
+        }
+
+        .confess-card::after {
+            content: "♥";
+            color: #ffb3c1;
+            font-size: 24px;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            opacity: 0.8;
+        }
+
+        /* 步骤内容样式 */
+        .step-content {
+            display: none;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 文字样式 */
+        .step-title {
+            font-size: 28px;
+            color: #ff6b8b;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .step-desc {
+            font-size: 18px;
+            color: #ff8fa3;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* 按钮样式 */
+        .next-btn {
+            padding: 12px 30px;
+            background: linear-gradient(90deg, #ff8fa3, #ff6b8b);
+            border: none;
+            border-radius: 30px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 127, 178, 0.2);
+            margin: 0 10px;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 127, 178, 0.3);
+        }
+
+        .next-btn:active {
+            transform: translateY(0);
+        }
+
+        /* 最终步骤爱心样式 */
+        .final-heart {
+            font-size: 60px;
+            color: #ff6b8b;
+            margin: 20px 0;
+            animation: beat 1.5s infinite;
+        }
+
+        @keyframes beat {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* 结果内容样式 */
+        .result-content {
+            display: none;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .result-content.active {
+            display: block;
+        }
+
+        .result-title {
+            font-size: 32px;
+            color: #ff6b8b;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .result-desc {
+            font-size: 20px;
+            color: #ff8fa3;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .big-heart {
+            font-size: 80px;
+            color: #ff6b8b;
+            margin: 10px 0;
+            animation: beat 1s infinite;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 480px) {
+            .confess-card {
+                padding: 30px 20px;
+            }
+
+            .step-title {
+                font-size: 24px;
+            }
+
+            .step-desc {
+                font-size: 16px;
+            }
+
+            .final-heart {
+                font-size: 50px;
+            }
+
+            .result-title {
+                font-size: 28px;
+            }
+
+            .result-desc {
+                font-size: 18px;
+            }
+
+            .big-heart {
+                font-size: 60px;
+            }
+
+            .next-btn {
+                margin: 10px 5px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 漂浮爱心背景容器 -->
+    <div class="heart-container"></div>
+
+    <!-- 表白卡片 -->
+    <div class="confess-card">
+        <!-- 步骤1 -->
+        <div class="step-content active" data-step="1">
+            <h2 class="step-title">嗨～小甜你好呀 😘</h2>
+            <p class="step-desc">我有一件很重要的事情想告诉你</p>
+            <button class="next-btn" onclick="nextStep()">点击继续 →</button>
+        </div>
+
+        <!-- 步骤2 -->
+        <div class="step-content" data-step="2">
+            <h2 class="step-title">认识你的每一天 🥰</h2>
+            <p class="step-desc">都像被撒了一把甜甜的糖，空气里都是甜甜的味道</p>
+            <button class="next-btn" onclick="nextStep()">点击继续 →</button>
+        </div>
+
+        <!-- 步骤3 -->
+        <div class="step-content" data-step="3">
+            <h2 class="step-title">我偷偷喜欢你很久啦 💓</h2>
+            <p class="step-desc">你的笑容，你的温柔，都深深吸引着我</p>
+            <button class="next-btn" onclick="nextStep()">点击继续 →</button>
+        </div>
+
+        <!-- 步骤4（表白询问） -->
+        <div class="step-content" data-step="4">
+            <h2 class="step-title">做我的宝贝吧 ❤️</h2>
+            <div class="final-heart">♥</div>
+            <p class="step-desc">往后余生，风雪是你，平淡是你，清贫是你，荣华是你，心底温柔是你，目光所致也是你</p>
+            <p class="step-desc" style="font-weight: bold; margin-top: 10px;">你愿意接受我的表白吗？</p>
+            <button class="next-btn" onclick="showAcceptResult()">我愿意</button>
+            <button class="next-btn" onclick="showRefuseResult()">我拒绝</button>
+        </div>
+
+        <!-- 我愿意 结果展示 -->
+        <div class="result-content" id="acceptResult">
+            <h2 class="result-title">太好啦！🥳</h2>
+            <div class="big-heart">♥</div>
+            <p class="result-desc">从今天起，你就是我最珍贵的宝贝啦～</p>
+            <p class="result-desc">我会把所有的温柔和偏爱都给你，陪你一起看日出日落，一起度过每一个美好的瞬间 💖</p>
+            <p class="result-desc" style="font-weight: bold; color: #ff6b8b; margin-top: 20px;">余生漫漫，皆是你 ✨</p>
+        </div>
+
+        <!-- 我拒绝 结果展示 -->
+        <div class="result-content" id="refuseResult">
+            <h2 class="result-title">不行哦～ 😝</h2>
+            <div class="final-heart">♥</div>
+            <p class="result-desc">我才不接受你的拒绝呢～</p>
+            <p class="result-desc">我的喜欢这么真挚，你怎么能拒绝呀？再好好考虑一下吧 😘</p>
+            <button class="next-btn" onclick="backToAsk()">重新选择</button>
+        </div>
+    </div>
+
+    <script>
+        // 当前步骤
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        // 下一步按钮点击事件
+        function nextStep() {
+            if (currentStep >= totalSteps) return;
+
+            // 隐藏当前步骤
+            document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
+            // 显示下一步骤
+            currentStep++;
+            document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
+        }
+
+        // 展示“我愿意”结果
+        function showAcceptResult() {
+            document.querySelector(`[data-step="4"]`).classList.remove('active');
+            document.getElementById('acceptResult').classList.add('active');
+            // 增加更多漂浮爱心，烘托氛围
+            createExtraHearts();
+        }
+
+        // 展示“我拒绝”结果
+        function showRefuseResult() {
+            document.querySelector(`[data-step="4"]`).classList.remove('active');
+            document.getElementById('refuseResult').classList.add('active');
+        }
+
+        // 返回表白询问步骤
+        function backToAsk() {
+            document.getElementById('refuseResult').classList.remove('active');
+            document.querySelector(`[data-step="4"]`).classList.add('active');
+        }
+
+        // 创建漂浮爱心
+        function createFloatHearts() {
+            const heartContainer = document.querySelector('.heart-container');
+            const heartCount = 20; // 爱心数量
+
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('float-heart');
+
+                // 随机样式
+                const size = Math.random() * 15 + 10; // 爱心大小 10-25px
+                const left = Math.random() * 100; // 水平位置 0-100%
+                const delay = Math.random() * 10; // 动画延迟
+                const duration = Math.random() * 10 + 5; // 动画时长 5-15s
+
+                heart.style.width = `${size}px`;
+                heart.style.height = `${size}px`;
+                heart.style.left = `${left}%`;
+                heart.style.animationDelay = `${delay}s`;
+                heart.style.animationDuration = `${duration}s`;
+
+                heartContainer.appendChild(heart);
+            }
+        }
+
+        // 额外创建爱心（我愿意时触发）
+        function createExtraHearts() {
+            const heartContainer = document.querySelector('.heart-container');
+            const extraHeartCount = 30; // 额外爱心数量
+
+            for (let i = 0; i < extraHeartCount; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('float-heart');
+
+                const size = Math.random() * 20 + 15;
+                const left = Math.random() * 100;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 8 + 5;
+                // 随机颜色，更丰富
+                const colors = ['#ff6b8b', '#ff8fa3', '#ffb3c1', '#ffc8dd'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                heart.style.background = randomColor;
+                heart.style.setProperty('--heart-color', randomColor);
+
+                heart.style.width = `${size}px`;
+                heart.style.height = `${size}px`;
+                heart.style.left = `${left}%`;
+                heart.style.animationDelay = `${delay}s`;
+                heart.style.animationDuration = `${duration}s`;
+
+                heartContainer.appendChild(heart);
+            }
+        }
+
+        // 页面加载完成后创建漂浮爱心
+        window.onload = function() {
+            createFloatHearts();
+        };
+    </script>
+</body>
+</html>
